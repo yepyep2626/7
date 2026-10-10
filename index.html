@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; base-uri 'none'; form-action 'none'">
+<title>서울 지역문제 제안서 쓰기</title>
+<style>
+  body { font-family:'Malgun Gothic','맑은 고딕','Apple SD Gothic Neo','Noto Sans KR',sans-serif; background:#FFFBE6; color:#333; margin:0; padding:16px; text-align:center; }
+  h1,h2 { color:#E67300; }
+  .container { max-width:860px; margin:0 auto; background:#fff; padding:28px; border-radius:20px; box-shadow:0 8px 16px rgba(0,0,0,.1); }
+  .container.wide { max-width:1240px; }
+  button { background:#F28C28; color:#fff; border:none; border-radius:16px; padding:18px 28px; font-size:1.25rem; font-weight:bold; font-family:inherit; cursor:pointer; margin:8px; box-shadow:0 4px 6px rgba(0,0,0,.12); }
+  button:hover { background:#D97706; }
+  button.gray { background:#8A8A8A; } button.gray:hover { background:#6E6E6E; }
+  button.green { background:#2E9D5B; } button.green:hover { background:#237a46; }
+  input[type=text], textarea { font-family:inherit; font-size:1.1rem; padding:14px; border:2px solid #FFD9A8; border-radius:10px; box-sizing:border-box; width:100%; }
+  input[type=text].name { width:80%; max-width:400px; margin-bottom:20px; }
+  textarea { height:90px; resize:vertical; margin-bottom:6px; }
+  textarea.tall { height:150px; }
+  .hidden { display:none; }
+  .emoji-big { font-size:6rem; margin:8px 0; }
+  .highlight { color:#E0400A; font-weight:bold; }
+  .hint { font-size:.95rem; color:#666; margin:0 0 8px; text-align:left; }
+  .problem-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:6px; margin-top:16px; }
+  .box { text-align:left; border-radius:15px; padding:18px; margin-bottom:16px; }
+  .box h3 { margin:0 0 8px; }
+  .label { font-weight:bold; margin:12px 0 6px; text-align:left; line-height:1.5; }
+  .source { font-size:.85rem; color:#777; margin-top:6px; }
+  .article { background:#FFF3F7; border:2px dashed #F4A6B8; text-align:left; line-height:1.8; font-size:1.1rem; padding:16px; border-radius:15px; margin-bottom:12px; }
+  .ref-card { background:#fff; border-left:5px solid #5BB0DF; border-radius:10px; padding:10px 12px; margin:10px 0; line-height:1.7; font-size:1rem; text-align:left; }
+  .ref-card .k { font-weight:bold; color:#1B6F9E; }
+  .data { background:#fff; border:2px solid #CDE8F6; border-radius:12px; padding:12px; margin:10px 0; text-align:left; }
+  .data h4 { margin:0 0 8px; color:#1B6F9E; font-size:1rem; }
+  .bar-row { display:flex; align-items:center; gap:8px; margin:4px 0; font-size:.92rem; }
+  .bar-row .l { width:92px; flex:none; } .bar-row .b { flex:1; background:#EEF6FB; border-radius:6px; height:18px; } .bar-row .b i { display:block; height:100%; background:#5BB0DF; border-radius:6px; } .bar-row .v { width:96px; flex:none; text-align:right; }
+  table.mini { width:100%; border-collapse:collapse; font-size:.9rem; }
+  table.mini th, table.mini td { border:1px solid #B9D9EC; padding:6px; text-align:center; }
+  table.mini th { background:#EAF5FC; }
+  .two-col { display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:16px; align-items:start; }
+  .ref-panel { position:sticky; top:8px; max-height:calc(100vh - 24px); overflow:auto; text-align:left; background:#F4FAFF; border:2px solid #CDE8F6; border-radius:14px; padding:12px; }
+  .ref-panel summary { font-weight:bold; cursor:pointer; font-size:1.05rem; color:#1B6F9E; }
+  @media (max-width:900px){ .two-col { grid-template-columns:1fr; } .ref-panel { position:static; max-height:none; } }
+  .choices { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
+  .choices label { flex:1; min-width:140px; background:#fff; border:2px solid #FFD9A8; border-radius:12px; padding:12px; cursor:pointer; font-size:1.05rem; text-align:center; }
+  .choices input { display:none; }
+  .choices input:checked + span { font-weight:bold; color:#E0400A; }
+  .choices label:has(input:checked) { background:#FFE9C7; border-color:#F28C28; }
+  .check-item { display:flex; gap:10px; text-align:left; background:#fff; border-radius:10px; padding:10px; margin-bottom:8px; line-height:1.6; }
+  .check-item.ok { border-left:6px solid #2E9D5B; } .check-item.fix { border-left:6px solid #D93025; background:#FFF5F5; }
+  .flag { color:#D93025; background:#FFE9E9; border-radius:4px; }
+  .spell { color:#D93025; font-weight:bold; text-decoration:underline wavy #D93025; }
+  .sheet { text-align:left; border:3px solid #E8B27A; border-radius:12px; padding:22px; background:#fff; line-height:1.8; }
+  .sheet table { width:100%; border-collapse:collapse; }
+  .sheet th { width:120px; background:#FFE9C7; border:1px solid #C9A27A; padding:10px; vertical-align:top; }
+  .sheet td { border:1px solid #C9A27A; padding:10px; vertical-align:top; word-break:keep-all; overflow-wrap:anywhere; }
+  .sheet h2 { text-align:center; margin-top:0; color:#333; }
+  .sheet .sign { text-align:right; margin-top:14px; }
+</style>
+</head>
+<body>
+<div class="container" id="container">
+
+  <!-- 1. 이름 -->
+  <div id="s1" class="screen">
+    <h1>👋 안녕! 네 이름을 알려줄래?</h1>
+    <div class="emoji-big" aria-hidden="true">🧒</div>
+    <input type="text" id="name" class="name" placeholder="이름을 입력하세요" maxlength="10"><br>
+    <button id="startBtn">🚀 시작하기</button>
+  </div>
+
+  <!-- 2. 문제 고르기 -->
+  <div id="s2" class="screen hidden">
+    <h1 id="welcome"></h1>
+    <h2>우리가 사는 서울에서 일어나는 문제들의 해결방안을<br>제안서로 작성해 봐!</h2>
+    <h3 style="text-align:left;color:#E67300;margin:18px 0 0;">📍 우리 지역 문제</h3>
+    <div class="problem-grid" id="problemGrid"></div>
+    <h3 style="text-align:left;color:#E67300;margin:22px 0 0;">🌟 우리 또래가 관심 가질 만한 서울 이야기</h3>
+    <div class="problem-grid" id="extraGrid"></div>
+  </div>
+
+  <!-- 3. 자료 읽기 -->
+  <div id="s3" class="screen hidden">
+    <h1 id="pTitle"></h1>
+    <div id="refs3"></div>
+    <button class="gray" id="back3">⬅️ 뒤로 가기</button>
+    <button id="next3">제안 생각하러 가기 ➡️</button>
+  </div>
+
+  <!-- 4. 제안 내용과 이유 -->
+  <div id="s4" class="screen hidden">
+    <h1>💡 시청에 제안하고 싶은 일은?</h1>
+    <p class="hint" id="s4problem" style="text-align:center;"></p>
+    <div class="box" style="background:#EEE8FF;">
+      <h3>📢 제안하는 내용</h3>
+      <textarea id="t_proposal" maxlength="400" placeholder="내가 시청에 제안하고 싶은 일을 적어 보세요."></textarea>
+      <div class="label">이 제안을 실천할 수 있나요?</div>
+      <div class="choices">
+        <label><input type="radio" name="feasible" value="yes"><span>🙆 네, 할 수 있어요</span></label>
+        <label><input type="radio" name="feasible" value="some"><span>🤔 조금 어려워요</span></label>
+        <label><input type="radio" name="feasible" value="no"><span>🙅 하기 어려워요</span></label>
+      </div>
+      <div class="label">👍 장점은 무엇인가요?</div>
+      <textarea id="t_pros" maxlength="300" placeholder="이 제안을 하면 무엇이 좋아질까요?"></textarea>
+      <div class="label">👎 단점은 무엇인가요?</div>
+      <textarea id="t_cons" maxlength="300" placeholder="이 제안을 하면 불편하거나 어려운 점은 무엇일까요?"></textarea>
+    </div>
+    <div class="box" style="background:#E3F6E8;">
+      <h3>🔎 제안하는 이유</h3>
+      <textarea id="t_reason" maxlength="500" placeholder="왜 이 제안을 하는지 이유를 적어 보세요."></textarea>
+      <div class="label">내 이유가 알맞은가요? 시청 선생님이 읽고 고개를 끄덕일까요?</div>
+      <div class="choices">
+        <label><input type="radio" name="reasonOk" value="yes"><span>🙆 네, 알맞아요</span></label>
+        <label><input type="radio" name="reasonOk" value="fix"><span>✏️ 더 고쳐야 해요</span></label>
+      </div>
+    </div>
+    <button class="gray" id="back4">⬅️ 뒤로 가기</button>
+    <button id="next4">제안서 쓰러 가기 ➡️</button>
+  </div>
+
+  <!-- 5. 제안서 작성 (자료를 옆에 두고 바로 쓰기) -->
+  <div id="s5" class="screen hidden">
+    <h1>📝 제안서 쓰기</h1>
+    <div class="two-col">
+      <aside class="ref-panel"><details open><summary>📚 자료 (보면서 바로 써요)</summary><div id="refs5"></div></details></aside>
+      <div>
+        <div class="box" style="background:#FFF8DC;">
+          <div class="label">누구에게 제안하나요?</div>
+          <input type="text" id="f_to" maxlength="30" placeholder="예: 서울특별시청">
+          <div class="label">1. 제목<br><span class="hint" style="margin:0;">제안하는 내용이 잘 드러나게 제목을 붙였나요?</span></div>
+          <input type="text" id="f_title" maxlength="60" placeholder="제목을 써 보세요.">
+          <div class="label">2. 문제 상황<br><span class="hint" style="margin:0;">문제 상황을 구체적으로 썼나요? 왼쪽 자료의 기사·그래프·전문가 설명에서 찾은 사실과 숫자를 넣어 보세요.</span></div>
+          <textarea id="f_problem" class="tall" maxlength="500" placeholder="언제, 어디에서, 어떤 문제가 있는지 자료를 보면서 써 보세요."></textarea>
+          <div class="label">3. 제안하는 내용<br><span class="hint" style="margin:0;">'...합시다.', '...하면 어떨까요?', '...하면 좋겠습니다.'와 같은 표현을 썼나요?</span></div>
+          <textarea id="f_proposal" maxlength="400"></textarea>
+          <div class="label">4. 제안하는 이유<br><span class="hint" style="margin:0;">'왜냐하면 ...하기 때문입니다.', '...하면 ...할 수 있습니다.'와 같은 표현으로 제안을 받아들이면 좋은 점을 썼나요?</span></div>
+          <textarea id="f_reason" maxlength="500"></textarea>
+        </div>
+        <button class="gray" id="back5">⬅️ 뒤로 가기</button>
+        <button id="next5">고쳐 쓰러 가기 ➡️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 고쳐쓰기 -->
+  <div id="s6" class="screen hidden">
+    <h1>🧐 고쳐 쓰기</h1>
+    <p class="hint" style="text-align:center;">제안서를 살펴봐 주는 검토 도우미가 빨간색으로 알려 줘요. 빨간 부분을 보고 아래에서 고쳐 써 봐!</p>
+    <div class="two-col">
+      <aside class="ref-panel"><details open><summary>📚 자료 (다시 보면서 고쳐요)</summary><div id="refs6"></div></details></aside>
+      <div>
+        <div id="reviewList"></div>
+        <h3 style="text-align:left;">빨간색으로 표시한 내 제안서</h3>
+        <div class="sheet" id="markedSheet"></div>
+        <h3 style="text-align:left;margin-top:20px;">✏️ 여기에서 고쳐 쓰기</h3>
+        <div class="box" style="background:#FFF8DC;">
+          <div class="label">받는 곳</div><input type="text" id="e_to" maxlength="30">
+          <div class="label">제목</div><input type="text" id="e_title" maxlength="60">
+          <div class="label">문제 상황</div><textarea id="e_problem" class="tall" maxlength="500"></textarea>
+          <div class="label">제안하는 내용</div><textarea id="e_proposal" maxlength="400"></textarea>
+          <div class="label">제안하는 이유</div><textarea id="e_reason" maxlength="500"></textarea>
+        </div>
+        <button class="gray" id="back6">⬅️ 뒤로 가기</button>
+        <button id="recheck">🔄 다시 검토하기</button>
+        <button class="green" id="finishBtn">✅ 다 고쳤어요!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 완성 -->
+  <div id="s7" class="screen hidden">
+    <h1>🏆 <span id="doneName"></span> 학생의 제안서 완성!</h1>
+    <p class="hint" style="text-align:center;">아래 버튼을 누르면 <b>PDF 파일이 내 컴퓨터에 저장</b>돼요. (보통 '다운로드' 폴더)</p>
+    <div class="sheet" id="finalSheet"></div>
+    <button class="gray" id="back7">⬅️ 고쳐 쓰러 가기</button>
+    <button class="green" id="pdfBtn">📄 PDF로 저장하기</button>
+    <button id="restartBtn">🔄 처음부터 다시 하기</button>
+  </div>
+
+</div>
+
+<script>
+/* ==================== 자료 (사회 4-2 교과서·교사용 교과서, 『서울의 생활』 바탕) ==================== */
+const LIFE = "『서울의 생활』";
+const TB   = "사회 4-2 교과서";
+const SRC_LIFE = "자료: 『서울의 생활』, 서울특별시(2025)";
+
+const problems = {
+  trash: {
+    title: "🗑️ 쓰레기 문제",
+    headline: "서울의 쓰레기, 하루에 1만 톤이 넘게 나와요",
+    body: "서울의 하루 생활 쓰레기 배출량은 2021년부터 계속 1만 톤을 넘고 있습니다. 쓰레기가 많이 생기면 환경이 오염되고, 쓰레기를 처리하기도 어려워집니다. 우리가 먹고 마신 과자 봉지, 음료 컵, 급식 우유팩도 모두 쓰레기가 됩니다.",
+    source: SRC_LIFE,
+    charts: [
+      { type:"bars", title:"서울의 하루 생활 쓰레기 배출량", unit:"톤", source:SRC_LIFE,
+        rows:[["2018년",9492.9],["2019년",9847.4],["2020년",9673.4],["2021년",10852.9],["2022년",10913.8],["2023년",10426.9]] }
+    ],
+    refs: [
+      { k:"🧑‍🏫 전문가 설명", t:"쓰레기 소각장처럼 주민들이 싫어하는 시설이 내가 사는 동네에 들어오는 것을 반대하는 현상을 '님비 현상'이라고 해요. 이런 일 때문에 지역 사이에 갈등이 생기기도 해요.", s:"에듀넷 누리집(교사용 교과서 66쪽에 실린 자료)" },
+      { k:"ℹ️ 쓰레기는 어디로 갈까요?", t:"다시 쓸 수 없는 쓰레기는 자원회수시설에서 태워 크기를 줄인 뒤 매립지로 보내요. 쓰레기가 늘어날수록 처리하기 어려워져요.", s:`${LIFE} 106·109쪽` },
+      { k:"📝 조사 자료의 예", t:"쓰레기 문제를 조사한 교과서의 예에는 '쓰레기 무단 배출 건수가 늘고 있다는 통계', '재활용의 필요성을 잘 모르는 주민이 많다는 신문 기사' 같은 자료가 나와요.", s:`${TB} 68쪽` }
+    ]
+  },
+  water: {
+    title: "💧 수질오염 문제",
+    headline: "음식물과 세제가 하천을 더럽혀요",
+    body: "사람들이 버리는 음식물, 화학 약품, 세제 등 때문에 하천의 물이 오염되고 있습니다. 한 번 오염된 물을 다시 깨끗하게 하려면 아주 많은 양의 물이 필요합니다. 우리가 마시고 먹는 음식을 하수구에 버리면 하천이 더 더러워질 수 있습니다.",
+    source: SRC_LIFE,
+    charts: [
+      { type:"bars", title:"오염된 물을 깨끗하게 하는 데 필요한 물의 양", unit:"L", source:SRC_LIFE,
+        rows:[["식용유 500ml",13500],["우유 200ml",7500],["커피 175ml",2520],["된장찌개 150ml",1680],["라면 국물 150ml",564]] }
+    ],
+    refs: [
+      { k:"📝 학생 조사 사례", t:"우리 지역의 문제를 조사한 학생은 이렇게 썼어요. \"△△ 하천으로 폐수가 흘러 들어간다.\"", s:`${TB} 63쪽` },
+      { k:"ℹ️ 지역문제의 종류", t:"교과서에서는 환경 오염, 쓰레기 무단 배출 등을 지역문제의 예로 들어요.", s:`${TB} 62쪽` }
+    ]
+  },
+  noise: {
+    title: "🔊 소음·진동 문제",
+    headline: "소음 때문에 불편하다는 민원이 크게 늘었어요",
+    body: "소음과 진동은 주로 도로, 집, 공사 현장에서 일어납니다. 특히 명절처럼 온 가족이 집에 있는 시간이 늘어나면 층간 소음 민원이 늘어납니다. 층간 소음 때문에 화가 난 이웃이 일부러 소리를 내는 '보복 소음' 민원도 층간 소음 민원의 10% 이상이라고 합니다.",
+    source: SRC_LIFE,
+    charts: [
+      { type:"bars", title:"서울의 소음·진동 관련 민원 발생 현황", unit:"건", source:SRC_LIFE,
+        rows:[["2009년",15922],["2012년",20166],["2015년",41286],["2018년",52173],["2021년",66828],["2024년",59263]] }
+    ],
+    refs: [
+      { k:"📰 신문 기사 (서울의 층간 소음 증가, 보복 소음 민원도 꾸준)", t:"서울시가 소음·진동 민원의 유형을 분석했어요. 명절에는 온 가족이 집에서 보내는 시간이 늘어나 층간 소음 민원이 많아졌고, 층간 소음 민원의 10% 이상이 보복 소음 민원이었다고 해요.", s:`${LIFE} 108쪽` },
+      { k:"📝 주민 의견 조사 사례", t:"관리 사무소에 물어보니, 우리 동네 주민들은 층간 소음에 대한 불만이 많았다고 해요.", s:`${LIFE} 104쪽` },
+      { k:"ℹ️ 시끄러운 곳", t:"공사장 소음, 도로의 자동차 소리, 아파트 위층의 소리는 모두 지역 주민의 생활을 불편하게 해요.", s:`${TB} 61쪽` }
+    ]
+  },
+  parking: {
+    title: "🚗 주차 문제",
+    headline: "불법 주차 때문에 소방차가 늦게 도착해요",
+    body: "서울은 주차할 공간이 부족해서 불법으로 주차하는 차가 많습니다. 도로에 불법으로 주차한 차 때문에 소방차가 불이 난 곳에 늦게 도착해 피해가 더 커지기도 합니다. 서울특별시청 누리집에도 불법 주차 때문에 불편하다는 글이 많이 올라와 있습니다. 학교 가는 길(통학로) 근처에 불법 주차된 차가 많다는 조사 결과도 있습니다.",
+    source: `자료: ${LIFE}(서울특별시, 2025), ${TB}`,
+    charts: [
+      { type:"bars", title:"서울의 자동차 등록 대수", unit:"대", source:SRC_LIFE,
+        rows:[["2009년",2954704],["2012년",2969184],["2015년",3056588],["2018년",3124651],["2021년",3176743],["2024년",3176933]] },
+      { type:"bars", title:"전체 주차 공간에 시간대별로 주차된 자동차의 수 (교과서 예시 자료)", unit:"대", source:`자료: ${TB} 66쪽`,
+        rows:[["6~9시",200],["9~12시",140],["12~15시",60],["15~18시",80],["18~21시",260],["21~24시",300]] },
+      { type:"table", title:"동별 자동차 수와 주차 공간의 수 (교과서 예시 자료)", source:`자료: ${TB} 66쪽`,
+        head:["동","자동차 수(대)","개인 주차장 주차 공간(개)","공용 주차장 주차 공간(개)"],
+        rows:[["○○동","1,200","300","700"],["◇◇동","900","600","없음"],["△△동","1,500","350","950"],["☆☆동","800","100","500"]] }
+    ],
+    refs: [
+      { k:"📰 신문 기사 (불법 주차, 대책이 필요하다)", t:"도로에 불법으로 주차한 차량 때문에 소방차가 화재 현장에 늦게 도착해 피해가 더 커졌다는 내용의 기사예요.", s:`${TB} 67쪽` },
+      { k:"📝 주민 설문 조사 결과", t:"'우리 지역에 주차 문제가 일어나는 원인은 무엇이라고 생각하나요?'라는 질문에 이런 답이 나왔어요. ① 주차 공간이 부족해서 ② 주민들이 자기의 편리함만 생각해서 ③ 주차 공간을 효율적으로 쓰려는 노력이 부족해서 ④ 불법 주차 단속이 꾸준히 이루어지지 않고 벌금이 적어서", s:`${TB} 67쪽` },
+      { k:"🧑‍🏫 뉴스 속 설명 (어린이 안전과 맞바꾼 주차 편의)", t:"학교 주변 이면 도로를 주차 공간으로 쓰는 주택·식당·상가가 많은 곳에서는, 어린이 보호 구역을 지정하는 것을 싫어하는 사람도 많다고 해요.", s:"KBS 뉴스(2022. 7. 25.) (교사용 교과서 67쪽에 실린 자료)" },
+      { k:"📝 주민 의견 조사 사례", t:"서울특별시청 누리집에 들어가 보니, 불법으로 주차한 차량 때문에 불편을 호소하는 글이 많았어요.", s:`${LIFE} 104쪽` }
+    ]
+  },
+  housing: {
+    title: "🏠 주택 문제",
+    headline: "낡은 집과 건물 때문에 생활이 불편해요",
+    body: "서울에는 많은 사람이 모여 살다 보니 여러 가지 주택 문제가 생깁니다. 일부 지역에는 오래되고 낡은 집이 많아서 사람들이 생활하기에 불편하고 위험하기도 합니다. 집이 낡으면 벽이 갈라지거나 시설이 고장 날 수 있습니다.",
+    source: SRC_LIFE,
+    charts: [],
+    refs: [
+      { k:"📝 시청에 의견을 낸 어린이의 글", t:"휠체어를 타고 다니는 초등학생이 시청에 이런 의견을 냈어요. 거리를 지나다 상점에 들르고 싶어도, 문턱이 있고 도로와 높이가 다른 오래된 건물에는 혼자 들어가기가 어렵다는 내용이에요.", s:`${LIFE} 100쪽` },
+      { k:"ℹ️ 지역문제의 종류", t:"교과서에서는 주차 공간 부족, 교통 혼잡과 함께 '낡은 시설물'도 지역문제의 예로 들어요.", s:`${TB} 62쪽` }
+    ]
+  },
+  safety: {
+    title: "🚨 안전 문제",
+    headline: "어두운 골목길, 갑자기 쏟아지는 폭우",
+    body: "서울에는 좁고 어두운 골목길이 많은 곳이 있습니다. 이런 곳에서는 주민들이 범죄에 대한 불안감을 느낍니다. 또 이상 기후로 짧은 시간에 많은 비가 내리면서 길이 물에 잠기는 피해도 일어납니다.",
+    source: SRC_LIFE,
+    charts: [],
+    refs: [
+      { k:"📰 신문 기사 (안전한 마을, 모두가 함께 만든다!)", t:"오래된 주택들과 골목길에서 범죄가 자주 일어나 불안해하던 ○○동 주민들의 이야기가 실렸어요.", s:`${LIFE} 117쪽` },
+      { k:"📰 신문 기사 (여름철 큰비만 오면 고립)", t:"○○리 주민들은 해마다 여름철에 큰비가 내리면 도로가 물에 잠겨, 며칠 동안 마을 밖으로 나가지 못해요.", s:`${TB} 62쪽 (연합뉴스, 2023. 7. 19.)` },
+      { k:"ℹ️ 서울의 안전 문제", t:"서울 시민의 안전을 위협하는 문제로는 범죄, 화재, 폭우, 폭설 등이 있어요. 특히 좁고 어두운 골목길이 많은 곳에서는 주민들이 범죄에 대한 불안감을 느껴요.", s:`${LIFE} 116쪽` }
+    ]
+  },
+  pet: {
+    title: "🐕 동물과 함께 살기 (펫티켓)",
+    headline: "목줄 없는 반려견, 주민들이 불안해해요",
+    body: "서울에는 반려동물과 함께 사는 가족이 많습니다. 그런데 목줄 없이 돌아다니는 반려견이 위험하다고 생각하는 주민들이 많습니다. 반려동물과 함께 산책하는 주민도, 반려동물이 무서운 주민도 있어서 서로 불편함을 느낍니다. 서로를 위해 지켜야 할 예절, 펫티켓이 필요합니다.",
+    source: `자료: ${LIFE}(서울특별시, 2025)의 지역 문제 조사 사례`,
+    charts: [],
+    refs: [
+      { k:"📝 주민 의견 조사 사례", t:"우리 동네 주민들의 이야기를 들어 보니, 목줄 없이 돌아다니는 반려견이 위험하다고 생각하는 주민들이 많았어요.", s:`${LIFE} 104쪽` },
+      { k:"ℹ️ 지역문제란?", t:"지역 주민의 생활을 불편하게 하거나 지역 주민들 사이에 갈등을 일으키는 문제를 지역문제라고 해요. 이웃 사이의 불편도 지역문제가 될 수 있어요.", s:`${TB} 60~62쪽` },
+      { k:"🔍 직접 찾아보기", t:"우리 동네 공원이나 산책로에서 직접 본 일이나 이웃에게 들은 이야기도 문제 상황에 쓸 수 있어요.", s:"" }
+    ]
+  },
+
+  /* ===== 우리 또래가 관심 가질 만한 서울 이야기 (신문 기사 바탕) ===== */
+  kickboard: {
+    group: "extra",
+    title: "🛴 킥보드 문제",
+    headline: "킥보드 때문에 길이 위험해요",
+    body: "서울에서는 전동 킥보드 같은 '개인형 이동장치'가 빠르게 늘면서 사고도, 불편하다는 민원도 계속 늘고 있습니다. 길 한가운데나 횡단보도 앞에 아무렇게나 세워 둔 킥보드는 걷는 사람에게 방해가 됩니다. 킥보드는 운전면허가 있어야 탈 수 있는데도, 면허 없이 빌려 타다 일어나는 사고가 많고 그중에는 청소년이 많습니다.",
+    source: "자료: 인사이트, 파이낸셜뉴스, 노컷뉴스, YTN 보도를 4학년 눈높이로 줄여 씀",
+    charts: [
+      { type:"bars", title:"개인형 이동수단 무면허 운전 사고 (최근 5년)", unit:"건", source:"자료: 인사이트(서울시 조례 개정안 보도)",
+        rows:[["전체",570],["19세 이하",393]] }
+    ],
+    refs: [
+      { k:"📰 뉴스 속 설명 (서울시)", t:"서울시는 전동 킥보드 같은 개인형 이동수단의 판매와 대여가 크게 늘면서 사고도 늘고, 걷기 불편하다는 시민 민원도 계속 늘고 있다고 설명했어요.", s:"인사이트(서울시 조례 개정안 보도)" },
+      { k:"📰 신문 기사 (교통약자의 불편)", t:"보도 한가운데 불법으로 세워 둔 킥보드를 피하다 휠체어가 차도 쪽으로 넘어질 뻔한 일이 있었고, 앞을 보기 어려운 사람이 킥보드에 걸려 넘어져 무릎을 다친 일도 있었어요.", s:"노컷뉴스 보도" },
+      { k:"📝 학원가 이야기", t:"서초구 관계자는 반포 학원가에는 아이들과 학원 차가 많아서 킥보드 사고 위험이 높다고 말했어요.", s:"파이낸셜뉴스(2025. 1. 12.)" },
+      { k:"ℹ️ 알아 두기", t:"전동 킥보드는 만 16세 이상이 딸 수 있는 원동기장치자전거면허 이상의 운전면허가 있어야 탈 수 있어요.", s:"YTN 보도" }
+    ]
+  },
+  language: {
+    group: "extra",
+    title: "🔤 어려운 영어 행정용어 문제",
+    headline: "서울시가 쓰는 영어 말, 무슨 뜻일까요?",
+    body: "서울시가 만든 사업 이름이나 안내문 중에는 '스마트무브 스테이션', '러너 스테이션'처럼 뜻을 알기 어려운 영어가 들어간 것이 있습니다. 서울시의회에서도 시민이 잘 알아들을 수 있는 한글로 소통해야 한다는 지적이 나왔습니다. 영어가 어려운 어르신이나 외국인에게는 중요한 안내가 잘 전해지지 않을 수 있습니다.",
+    source: "자료: 서울신문(2025. 11. 11.), 이투데이(2022. 10. 7.), 쿠키뉴스(2021. 11. 12.) 보도를 4학년 눈높이로 줄여 씀",
+    charts: [
+      { type:"bars", title:"서울시 안의 간판 수 (2019년 기준)", unit:"개", source:"자료: 한글문화연대 조사, 쿠키뉴스(2021. 11. 12.)",
+        rows:[["전체 간판",7252],["외국 문자 간판",1704]] }
+    ],
+    refs: [
+      { k:"📰 신문 기사 (서울시의회 행정사무감사)", t:"서울시의회에서 한 시의원이 서울시가 쓰는 '스마트무브 스테이션', '러너 스테이션' 같은 이름이 외국인도 뜻을 모르는 외래어라고 비판했어요.", s:"서울신문(2025. 11. 11.)" },
+      { k:"📰 서울시의 인정", t:"서울시도 일부 정책사업 이름에 불필요한 외국어를 써서 언론의 지적을 받은 적이 있다고 밝혔어요. 그래서 시민의 눈으로 사업 이름이 쉬운지, 외국어 때문에 이해하기 어려운 사람은 없는지 조사하기 시작했어요.", s:"이투데이(2022. 10. 7.)" },
+      { k:"📝 어르신의 이야기", t:"서울 동대문구에 사는 60대 여성은 영어 이름으로 된 가게에서 만나자고 하면 어딘지 찾지 못해 곤란할 때가 있다고 했어요.", s:"쿠키뉴스(2021. 11. 12.)" }
+    ]
+  },
+  bus: {
+    group: "extra",
+    title: "🚌 현금 없는 버스 문제",
+    headline: "현금 없는 버스, 모두에게 편할까요?",
+    body: "서울 시내버스 394개 노선 중 180개 노선에서는 현금으로 요금을 낼 수 없습니다. 교통카드나 휴대전화 결제가 익숙한 사람에게는 편리하지만, 현금을 쓰는 어르신이나 교통카드 잔액이 없고 휴대전화도 꺼진 사람은 버스를 타기 어려울 수 있습니다. 버스 기사님은 결제가 길어지면 서 있는 승객이 휘청거려서 불안하다고 합니다.",
+    source: "자료: 한경매거진 JOB&JOY(2026. 4. 17.) 보도를 4학년 눈높이로 줄여 씀",
+    charts: [
+      { type:"bars", title:"서울 시내버스 노선 수 (2026년 4월 기사 기준)", unit:"개", source:"자료: 한경매거진 JOB&JOY(2026. 4. 17.)",
+        rows:[["전체 노선",394],["현금 없는 노선",180]] }
+    ],
+    refs: [
+      { k:"📰 신문 기사 (현금 없는 버스 현장)", t:"서울에서 13년째 시내버스를 운전한 기사님은 동전통이 없는데도 승객이 직접 동전을 건네는 경우가 있고, 돈을 가지고도 버스를 타지 못하는 일이 생긴다고 말했어요.", s:"한경매거진 JOB&JOY(2026. 4. 17.)" },
+      { k:"📝 어르신과 디지털 기기", t:"현금을 주로 쓰고 디지털 기기가 익숙하지 않은 어르신이 어려움을 겪는 경우가 많아요. 서울시가 모바일 교통카드 앱과 계좌이체 같은 방법을 마련했지만, 이런 디지털 방법이 또 다른 어려움이 된다는 지적도 나왔어요.", s:"한경매거진 JOB&JOY(2026. 4. 17.)" },
+      { k:"📝 승객의 다양한 의견", t:"카드나 모바일 결제가 혜택도 많고 편리하다는 대학생도 있었지만, 모든 사람이 만족하는 정책은 아니라고 말한 시민도 있었어요. 교통카드 잔액이 없는데 휴대전화까지 꺼져서 결국 택시를 탔다는 대학생의 이야기도 실렸어요.", s:"한경매거진 JOB&JOY(2026. 4. 17.)" },
+      { k:"ℹ️ 안전 이야기", t:"기사님은 자리에 앉아서 결제하라고 안내해도 서서 결제하는 승객이 많아 휘청거릴 때 불안하다고 말했어요.", s:"한경매거진 JOB&JOY(2026. 4. 17.)" }
+    ]
+  },
+  fixie: {
+    group: "extra",
+    title: "🚲 픽시 자전거 문제",
+    headline: "브레이크 없는 자전거, 친구들 사이에서 유행이래요",
+    body: "'픽시'는 기어가 하나뿐인 자전거로, 원래는 경기용으로 쓰입니다. 그런데 청소년들 사이에서 멋있다는 이유로 브레이크를 떼어 내고 타는 일이 늘고 있습니다. 브레이크가 없으면 멈추는 데 필요한 거리(제동 거리)가 일반 자전거보다 훨씬 길어서 사고가 나기 쉽습니다.",
+    source: "자료: 코리아데일리(2026. 6. 19.), 한국경제(2026. 3. 18.), 매일신문(2025. 8. 28.) 보도를 4학년 눈높이로 줄여 씀",
+    charts: [
+      { type:"bars", title:"19세 이하 자전거 교통사고 건수", unit:"건", source:"자료: 코리아데일리(2026. 6. 19.) (행정안전부·교통안전공단 설명)",
+        rows:[["2022년",1149],["2023년",1047],["2024년",1584],["2025년",1618]] },
+      { type:"table", title:"브레이크가 없는 픽시는 얼마나 늦게 멈출까?", source:"자료: 코리아데일리(2026. 6. 19.)",
+        head:["달리는 속도","일반 자전거보다 제동 거리가 길어지는 정도"],
+        rows:[["시속 10km","최소 5.5배"],["시속 20km","최대 13.5배"]] }
+    ],
+    refs: [
+      { k:"📝 한국소비자원 조사 (이용 중인 픽시 54대)", t:"수도권에서 달리고 있는 픽시 자전거 54대 중 16대(29.6%)는 앞·뒤 브레이크가 모두 없었어요.", s:"코리아데일리(2026. 6. 19.)" },
+      { k:"📝 설문 조사 결과", t:"픽시 자전거를 사거나 타 본 400명 중 82%가 픽시가 위험하다고 생각했고, 42.8%는 사고가 났거나 날 뻔한 경험이 있다고 답했어요.", s:"한국경제(2026. 3. 18.)" },
+      { k:"📝 왜 브레이크를 뗄까요?", t:"한 중학생은 친구들 사이에서 '노 브레이크'가 유행이라 가게에 가서 브레이크를 떼어 달라고 했다고 말했어요. 교통안전 전문가는 단속만 강화하면 청소년이 오히려 반감을 가질 수 있어서, 학교에서 실제 사고 사례를 알리는 안전 교육이 필요하다고 했어요.", s:"매일신문(2025. 8. 28.)" },
+      { k:"ℹ️ 알아 두기", t:"현재 법으로는 앞바퀴와 뒷바퀴를 각각 멈추게 하는 브레이크가 없는 자전거는 공공 도로에서 타면 안 돼요.", s:"다음(Daum) 뉴스 보도(2026. 4. 16.)" }
+    ]
+  }
+};
+
+/* ==================== 상태·도우미 ==================== */
+const st = { name:"", key:"", t:{}, f:{ to:"서울특별시청", title:"", problem:"", proposal:"", reason:"" }, warned:false };
+const $ = id => document.getElementById(id);
+const SCREENS = ['s1','s2','s3','s4','s5','s6','s7'];
+function show(id){
+  SCREENS.forEach(s=>$(s).classList.add('hidden')); $(id).classList.remove('hidden');
+  $('container').classList.toggle('wide', id==='s5'||id==='s6');
+  window.scrollTo(0,0);
+}
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+function callName(n){ const c=n.charCodeAt(n.length-1); if(c>=0xAC00&&c<=0xD7A3) return n+((c-0xAC00)%28!==0?'아':'야'); return n+' 님'; }
+const fmt = n => n.toLocaleString('ko-KR');
+const radio = name => { const r=document.querySelector(`input[name="${name}"]:checked`); return r?r.value:""; };
+
+/* ==================== 쓴 내용 보관하기 (뒤로 가기를 눌러도, 다른 문제를 골랐다 와도 유지) ==================== */
+const drafts = {};   // 문제별로 학생이 쓴 내용
+const DRAFT_TEXT = ['t_proposal','t_pros','t_cons','t_reason','f_to','f_title','f_problem','f_proposal','f_reason'];
+function snapshot(){
+  if(!st.key) return;
+  const d={};
+  DRAFT_TEXT.forEach(id=>{ d[id]=$(id).value; });
+  d.feasible=radio('feasible'); d.reasonOk=radio('reasonOk'); d.warned=st.warned;
+  drafts[st.key]=d;
+}
+function restore(k){
+  const d=drafts[k]||{};
+  DRAFT_TEXT.forEach(id=>{ $(id).value = (d[id]!==undefined) ? d[id] : (id==='f_to' ? '서울특별시청' : ''); });
+  ['feasible','reasonOk'].forEach(n=>document.querySelectorAll(`input[name="${n}"]`).forEach(r=>{ r.checked=(r.value===d[n]); }));
+  st.warned=!!d.warned;
+  st.f={ to:$('f_to').value, title:$('f_title').value, problem:$('f_problem').value, proposal:$('f_proposal').value, reason:$('f_reason').value };
+}
+
+/* ==================== 자료 그리기 (3·5·6단계 공통) ==================== */
+function chartHTML(c){
+  if(c.type==='table'){
+    return `<div class="data"><h4>📊 ${esc(c.title)}</h4><table class="mini"><tr>${c.head.map(h=>`<th>${esc(h)}</th>`).join('')}</tr>`+
+      c.rows.map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join('')}</tr>`).join('')+`</table><div class="source">${esc(c.source)}</div></div>`;
+  }
+  const max=Math.max(...c.rows.map(r=>r[1]));
+  return `<div class="data"><h4>📊 ${esc(c.title)} (단위: ${esc(c.unit)})</h4>`+
+    c.rows.map(r=>`<div class="bar-row"><span class="l">${esc(r[0])}</span><span class="b"><i style="width:${(r[1]/max*100).toFixed(1)}%"></i></span><span class="v">${fmt(r[1])}${esc(c.unit)}</span></div>`).join('')+
+    `<div class="source">${esc(c.source)}</div></div>`;
+}
+function refsHTML(key){
+  const p=problems[key];
+  return `<div class="article"><b>📰 [어린이 뉴스] ${esc(p.headline)}</b><br>${esc(p.body)}<div class="source">${esc(p.source)}</div></div>`+
+    p.charts.map(chartHTML).join('')+
+    p.refs.map(r=>`<div class="ref-card"><span class="k">${esc(r.k)}</span><br>${esc(r.t)}${r.s?`<div class="source">출처: ${esc(r.s)}</div>`:''}</div>`).join('')+
+    `<div class="source" style="text-align:left;">${p.group==='extra'?'※ 신문 기사에 나온 내용을 4학년 눈높이로 줄여 썼어요.':'※ 교과서와 『서울의 생활』에 나온 내용을 4학년 눈높이로 줄여 썼어요.'}</div>`;
+}
+
+/* ==================== 1 → 2 ==================== */
+function start(){
+  const n=$('name').value.trim();
+  if(!n){ alert("앗! 이름을 먼저 입력해 줘~ 😊"); return; }
+  st.name=n;
+  $('welcome').innerHTML=`환영해, <span class="highlight">${esc(callName(n))}</span>!`;
+  [['problemGrid',false],['extraGrid',true]].forEach(([id,isExtra])=>{
+    const g=$(id); g.innerHTML='';
+    Object.keys(problems).filter(k=>(problems[k].group==='extra')===isExtra).forEach(k=>{
+      const b=document.createElement('button'); b.textContent=problems[k].title; b.onclick=()=>pick(k); g.appendChild(b);
+    });
+  });
+  show('s2');
+}
+$('startBtn').onclick=start;
+$('name').addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.isComposing) start(); });
+
+/* ==================== 2 → 3 (자료 제시) ==================== */
+function pick(k){
+  if(st.key!==k){ snapshot(); st.key=k; restore(k); }   // 다른 문제를 고르면 쓰던 내용은 보관하고, 그 문제에 쓴 내용을 불러와요
+  $('pTitle').textContent=problems[k].title;
+  $('refs3').innerHTML=refsHTML(k);
+  show('s3');
+}
+$('back3').onclick=()=>show('s2');
+
+/* ==================== 3 → 4 ==================== */
+$('next3').onclick=()=>{
+  $('s4problem').textContent=problems[st.key].title+" · "+problems[st.key].headline;
+  show('s4');                                            // 쓴 내용은 그대로 두어요 (뒤로 갔다 와도 유지)
+};
+$('back4').onclick=()=>show('s3');
+$('next4').onclick=()=>{
+  const n=callName(st.name);
+  const t={ proposal:$('t_proposal').value.trim(), pros:$('t_pros').value.trim(), cons:$('t_cons').value.trim(), reason:$('t_reason').value.trim(),
+            feasible:radio('feasible'), reasonOk:radio('reasonOk') };
+  if(!t.proposal||!t.reason||!t.pros||!t.cons||!t.feasible||!t.reasonOk){ alert(`${n}, 빈칸이나 고르지 않은 곳이 있어! 모두 채워 줄래? 🌟`); return; }
+  if(!st.warned && (t.feasible==='no'||t.reasonOk==='fix')){
+    st.warned=true;
+    alert(`${n}, 실천하기 어렵거나 이유를 더 고쳐야 한다고 골랐어.\n위 칸의 글을 조금 바꿔 볼까? 이대로 괜찮다면 버튼을 한 번 더 눌러 줘! ✏️`); return;
+  }
+  st.t=t;
+  // 이미 제안서에 쓴 내용은 지우지 않고, 비어 있는 칸만 채워요
+  if(!$('f_to').value.trim()) $('f_to').value="서울특별시청";
+  if(!$('f_proposal').value.trim()) $('f_proposal').value=t.proposal;
+  if(!$('f_reason').value.trim()) $('f_reason').value=t.reason;
+  $('refs5').innerHTML=refsHTML(st.key);   // 자료를 옆에 두고 바로 쓰기
+  show('s5');
+};
+
+/* ==================== 5 → 6 ==================== */
+$('back5').onclick=()=>show('s4');
+$('next5').onclick=()=>{
+  const f={ to:$('f_to').value.trim(), title:$('f_title').value.trim(), problem:$('f_problem').value.trim(), proposal:$('f_proposal').value.trim(), reason:$('f_reason').value.trim() };
+  if(!f.to||!f.title||!f.problem||!f.proposal||!f.reason){ alert(`${callName(st.name)}, 빈칸이 있어! 모두 써 줄래? 💪`); return; }
+  st.f=f; loadEdits(); $('refs6').innerHTML=refsHTML(st.key); runReview(); show('s6');
+};
+
+/* ==================== 검토 도우미 (규칙으로 살펴보기) ==================== */
+const SPELL = [
+  [/안되요/g,'안 돼요'],[/안돼요/g,'안 돼요'],[/안돼(?!요)/g,'안 돼'],[/않되/g,'안 되'],[/됬/g,'됐'],[/(?<!안)되요/g,'돼요'],
+  [/해야되/g,'해야 되'],[/해야돼/g,'해야 돼'],[/어떻해/g,'어떡해'],[/몇일/g,'며칠'],[/금새/g,'금세'],[/설레임/g,'설렘'],
+  [/일부로/g,'일부러'],[/바램/g,'바람'],[/왠만/g,'웬만'],[/할려고/g,'하려고'],[/갈려고/g,'가려고'],[/할려면/g,'하려면'],
+  [/있슴/g,'있음'],[/있읍니다/g,'있습니다'],[/했읍니다/g,'했습니다'],[/희안/g,'희한'],[/어의없/g,'어이없'],[/그리구/g,'그리고'],
+  [/쓰래기/g,'쓰레기'],[/캠패인/g,'캠페인'],[/켐페인/g,'캠페인'],[/분리 수거/g,'분리수거'],[/횡단 보도/g,'횡단보도'],
+  [/수있/g,'수 있'],[/수없/g,'수 없'],[/ {2,}/g,'띄어쓰기를 한 칸만']
+];
+const STOP = ['제안','합시다','하자','부탁','우리','서울','문제','해결','하면','좋겠습니다','어떨까요'];
+const E_PROPOSAL = /(합시다|어떨까요|좋겠습니다|해 주세요|바랍니다|제안합니다|부탁드립니다)/;
+const E_REASON = /(왜냐하면|기 때문입니다|때문이에요|수 있습니다|수 있어요|좋겠습니다)/;
+const PLACE = /(에서|근처|주변|앞|골목|동네|학교|공원|놀이터|아파트|하천|횡단보도|통학로|길|도로|집|건물|계단|버스|정류장|킥보드|자전거|간판|한강|학원)/;
+const WHEN = /(\d|저녁|아침|밤|낮|매일|자주|때|요즘|여름|비 오는|비가|주말|등교|하교|방과)/;
+
+function stems(t){ return (t.match(/[가-힣A-Za-z0-9]+/g)||[]).map(w=>(w.length>=3&&/[은는이가을를의에도로과와]$/.test(w))?w.slice(0,-1):w).filter(w=>w.length>=2&&!STOP.includes(w)); }
+function sentences(text){ const out=[]; const re=/[^.?!\n]+[.?!]*/g; let m; while((m=re.exec(text))){ const raw=m[0]; const lead=raw.length-raw.trimStart().length; const s=raw.trim(); if(s) out.push({s,start:m.index+lead,end:m.index+lead+s.length}); } return out; }
+
+function review(f){
+  const marks={to:[],title:[],problem:[],proposal:[],reason:[]}; const items=[];
+  const whole=(k,why)=>marks[k].push({a:0,b:f[k].length,type:'flag',why});
+  const stm=stems(f.title); const shares=stm.some(s=>f.proposal.includes(s)||(s.length>=3&&f.proposal.includes(s.slice(0,-1))));
+  if(f.title.length>=6&&shares) items.push({ok:1,msg:"제목에 제안하는 내용이 잘 드러났어요."});
+  else { whole('title','제목'); items.push({ok:0,msg:"제목에 내가 제안하는 내용이 잘 드러나게 붙여 볼까요? 제안하는 내용에 나오는 낱말을 넣어 보세요."}); }
+  if(f.to.length>=2&&/(청|시|구|센터|의회|장)/.test(f.to)) items.push({ok:1,msg:"누구에게 제안하는지 밝혔어요."});
+  else { whole('to','받는 곳'); items.push({ok:0,msg:"누구에게 제안하는지 알맞게 밝혔는지 확인해 볼까요? (예: 서울특별시청)"}); }
+  const missing=[]; if(f.problem.length<40) missing.push("조금 더 자세히"); if(!PLACE.test(f.problem)) missing.push("어디에서"); if(!WHEN.test(f.problem)) missing.push("언제 / 얼마나(숫자)");
+  if(!missing.length) items.push({ok:1,msg:"문제 상황을 구체적으로 썼어요."});
+  else { whole('problem','문제 상황'); items.push({ok:0,msg:`문제 상황을 더 구체적으로 써 볼까요? 왼쪽 자료에서 찾은 사실이나 숫자를 넣어 보세요. (${missing.join(', ')})`}); }
+  const lack=[]; if(f.proposal.length<15){ lack.push('제안하는 내용'); whole('proposal','내용'); } if(f.reason.length<25){ lack.push('제안하는 이유'); whole('reason','이유'); }
+  if(!lack.length) items.push({ok:1,msg:"제안하는 내용과 이유가 잘 드러났어요."});
+  else items.push({ok:0,msg:`제안하는 내용과 이유를 조금 더 자세히 써 볼까요? (더 써야 할 곳: ${lack.join(', ')})`});
+  const badE=[]; if(!E_PROPOSAL.test(f.proposal)){ badE.push('proposal'); if(!marks.proposal.length) whole('proposal','표현'); } if(!E_REASON.test(f.reason)){ badE.push('reason'); if(!marks.reason.length) whole('reason','표현'); }
+  if(!badE.length) items.push({ok:1,msg:"제안하는 글에 알맞은 표현을 썼어요."});
+  else items.push({ok:0,msg:"제안하는 글에 알맞은 표현을 써 볼까요? 내용은 '...합시다.', '...하면 어떨까요?', '...하면 좋겠습니다.'처럼, 이유는 '왜냐하면 ...하기 때문입니다.', '...하면 ...할 수 있습니다.'처럼 써 보세요."});
+  const probs=new Set();
+  ['problem','proposal','reason'].forEach(k=>{
+    sentences(f[k]).forEach(({s,start,end})=>{
+      let why=null;
+      if(!/[.?!]$/.test(s)) why='마침표가 없어요';
+      else if(!/[다요죠까네][.?!]+$/.test(s)) why='문장의 끝이 어색해요';
+      else if(s.length>80) why='문장이 너무 길어요. 둘로 나눠 보세요';
+      else if(/(\S{2,})\s+\1(\s|[.?!]|$)/.test(s)) why='같은 말이 이어서 나와요';
+      if(why){ marks[k].push({a:start,b:end,type:'flag',why}); probs.add(why); }
+    });
+  });
+  if(!probs.size) items.push({ok:1,msg:"문장이 어색하지 않아요."});
+  else items.push({ok:0,msg:`문장을 다듬어 볼까요? (${[...probs].slice(0,3).join(' / ')})`});
+  let spellCount=0; const sugg=new Set();
+  Object.keys(marks).forEach(k=>{ SPELL.forEach(([re,fix])=>{ re.lastIndex=0; let m; while((m=re.exec(f[k]))){ marks[k].push({a:m.index,b:m.index+m[0].length,type:'spell',why:fix}); sugg.add(`'${m[0].trim()||'두 칸 띄어쓰기'}' → '${fix}'`); spellCount++; if(m[0].length===0) re.lastIndex++; } }); });
+  if(!spellCount) items.push({ok:1,msg:"눈에 띄는 맞춤법·띄어쓰기 실수가 없어요."});
+  else items.push({ok:0,msg:`맞춤법·띄어쓰기를 확인해 볼까요? ${[...sugg].slice(0,4).join(', ')}`});
+  return {items,marks};
+}
+const LABELS=["1. 제목","2. 누구에게 제안하는지","3. 문제 상황","4. 제안하는 내용과 이유","5. 알맞은 표현","6. 문장의 짜임","7. 맞춤법·띄어쓰기"];
+
+function markedHTML(text,ranges){
+  if(!text) return '<span class="flag">(아직 안 썼어요)</span>';
+  const cls=new Array(text.length).fill(null);
+  ranges.filter(r=>r.type==='flag').forEach(r=>{ for(let i=r.a;i<r.b;i++) cls[i]={t:'flag',why:r.why}; });
+  ranges.filter(r=>r.type==='spell').forEach(r=>{ for(let i=r.a;i<r.b;i++) cls[i]={t:'spell',why:r.why}; });
+  let out='',i=0;
+  while(i<text.length){
+    const c=cls[i]; let j=i; while(j<text.length&&((cls[j]&&c&&cls[j].t===c.t&&cls[j].why===c.why)||(!cls[j]&&!c))) j++;
+    const seg=esc(text.slice(i,j)).replace(/\n/g,'<br>');
+    out+= c?`<span class="${c.t}" title="${esc(c.why)}">${seg}</span>`:seg; i=j;
+  }
+  return out;
+}
+function todayStr(){ return new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'}); }
+function sheetHTML(f,marks,withDate){
+  const m=marks||{to:[],title:[],problem:[],proposal:[],reason:[]};
+  const body=k=> marks?markedHTML(f[k],m[k]):esc(f[k]).replace(/\n/g,'<br>');
+  return `<h2>${marks?'제안서 (검토 중)':'제 안 서'}</h2>
+  <table>
+    <tr><th>받는 곳</th><td>${body('to')}</td></tr>
+    <tr><th>제목</th><td>${body('title')}</td></tr>
+    <tr><th>문제 상황</th><td>${body('problem')}</td></tr>
+    <tr><th>제안하는 내용</th><td>${body('proposal')}</td></tr>
+    <tr><th>제안하는 이유</th><td>${body('reason')}</td></tr>
+  </table>
+  ${withDate?`<div class="sign">${esc(todayStr())}<br>제안한 학생: <b>${esc(st.name)}</b></div>`:''}`;
+}
+function runReview(){
+  const {items,marks}=review(st.f);
+  $('reviewList').innerHTML=items.map((it,i)=>`<div class="check-item ${it.ok?'ok':'fix'}"><div>${it.ok?'✅':'❗'}</div><div><b>${LABELS[i]}</b><br>${esc(it.msg)}</div></div>`).join('');
+  $('markedSheet').innerHTML=sheetHTML(st.f,marks,false);
+}
+function loadEdits(){ $('e_to').value=st.f.to; $('e_title').value=st.f.title; $('e_problem').value=st.f.problem; $('e_proposal').value=st.f.proposal; $('e_reason').value=st.f.reason; }
+function readEdits(){ st.f={ to:$('e_to').value.trim(), title:$('e_title').value.trim(), problem:$('e_problem').value.trim(), proposal:$('e_proposal').value.trim(), reason:$('e_reason').value.trim() }; }
+$('recheck').onclick=()=>{ readEdits(); runReview(); $('markedSheet').scrollIntoView({behavior:'smooth'}); };
+$('back6').onclick=()=>{ readEdits(); $('f_to').value=st.f.to; $('f_title').value=st.f.title; $('f_problem').value=st.f.problem; $('f_proposal').value=st.f.proposal; $('f_reason').value=st.f.reason; show('s5'); };
+
+/* ==================== 7 완성 ==================== */
+$('finishBtn').onclick=()=>{
+  readEdits();
+  if(!st.f.to||!st.f.title||!st.f.problem||!st.f.proposal||!st.f.reason){ alert(`${callName(st.name)}, 비어 있는 칸이 있어! 모두 채워 줘 🌟`); return; }
+  $('doneName').textContent=st.name;
+  $('finalSheet').innerHTML=sheetHTML(st.f,null,true);
+  show('s7');
+};
+$('back7').onclick=()=>{ loadEdits(); runReview(); show('s6'); };
+$('restartBtn').onclick=()=>{ if(confirm('처음부터 다시 할까요?\n지금까지 쓴 내용이 모두 사라져요.')) location.reload(); };
+
+/* ==================== PDF 파일 만들어 저장하기 (외부 도구 없이 이 컴퓨터에서 만들어요) ==================== */
+const PDF_FONT='"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR","Noto Sans CJK KR",sans-serif';
+
+function wrapText(g,text,maxW){
+  const out=[];
+  for(const para of text.split('\n')){
+    if(!para){ out.push(''); continue; }
+    let line='';
+    for(const word of para.split(' ')){
+      const test=line?line+' '+word:word;
+      if(g.measureText(test).width<=maxW){ line=test; continue; }
+      if(line){ out.push(line); line=''; }
+      if(g.measureText(word).width<=maxW){ line=word; continue; }
+      let part='';
+      for(const ch of word){ if(g.measureText(part+ch).width>maxW){ out.push(part); part=ch; } else part+=ch; }
+      line=part;
+    }
+    out.push(line);
+  }
+  return out;
+}
+
+function drawProposal(f,name){
+  const W=1654,H=2339,M=110;                       // A4 (200dpi)
+  const c=document.createElement('canvas'); c.width=W; c.height=H;
+  const g=c.getContext('2d');
+  g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  const rows=[['받는 곳',f.to],['제목',f.title],['문제 상황',f.problem],['제안하는 내용',f.proposal],['제안하는 이유',f.reason]];
+  const labelW=290, pad=26, contentW=W-2*M-labelW, avail=H-2*M-420;
+  let size=40, lh=0, layout=[];
+  for(; size>=22; size-=2){
+    g.font=`${size}px ${PDF_FONT}`; lh=Math.round(size*1.65);
+    layout=rows.map(([l,t])=>{ const lines=wrapText(g,t,contentW-2*pad); return {l,lines,h:Math.max(lines.length,1)*lh+2*pad}; });
+    if(layout.reduce((s,r)=>s+r.h,0)<=avail) break;
+  }
+  g.textBaseline='top'; g.textAlign='center'; g.fillStyle='#222';
+  g.font=`bold 76px ${PDF_FONT}`; g.fillText('제 안 서',W/2,M);
+  g.strokeStyle='#333'; g.lineWidth=4; g.beginPath(); g.moveTo(M+300,M+110); g.lineTo(W-M-300,M+110); g.stroke();
+  let y=M+190; g.lineWidth=3;
+  for(const r of layout){
+    g.fillStyle='#FFE9C7'; g.fillRect(M,y,labelW,r.h);
+    g.strokeStyle='#333'; g.strokeRect(M,y,labelW,r.h); g.strokeRect(M+labelW,y,contentW,r.h);
+    g.fillStyle='#222'; g.textAlign='center'; g.font=`bold ${size}px ${PDF_FONT}`; g.fillText(r.l,M+labelW/2,y+pad);
+    g.textAlign='left'; g.font=`${size}px ${PDF_FONT}`;
+    r.lines.forEach((ln,i)=>g.fillText(ln,M+labelW+pad,y+pad+i*lh));
+    y+=r.h;
+  }
+  g.textAlign='right'; g.font=`${Math.min(size,36)}px ${PDF_FONT}`; g.fillStyle='#222';
+  g.fillText(todayStr(),W-M,y+50);
+  g.fillText('제안한 학생: '+name,W-M,y+50+Math.round(Math.min(size,36)*1.7));
+  return c;
+}
+
+function makePdf(jpeg,imgW,imgH){
+  const enc=new TextEncoder(), parts=[], offs=[]; let pos=0;
+  const push=u=>{ parts.push(u); pos+=u.length; };
+  const str=s=>push(enc.encode(s));
+  const PW='595.28', PH='841.89';
+  str('%PDF-1.4\n');
+  offs[1]=pos; str('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+  offs[2]=pos; str('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+  offs[3]=pos; str(`3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n`);
+  offs[4]=pos; str(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${imgW} /Height ${imgH} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>\nstream\n`); push(jpeg); str('\nendstream\nendobj\n');
+  const content=`q ${PW} 0 0 ${PH} 0 0 cm /Im0 Do Q`;
+  offs[5]=pos; str(`5 0 obj\n<< /Length ${content.length} >>\nstream\n${content}\nendstream\nendobj\n`);
+  const xref=pos;
+  str('xref\n0 6\n0000000000 65535 f \n'+[1,2,3,4,5].map(i=>String(offs[i]).padStart(10,'0')+' 00000 n \n').join(''));
+  str(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new Blob(parts,{type:'application/pdf'});
+}
+
+$('pdfBtn').onclick=()=>{
+  try{
+    const canvas=drawProposal(st.f,st.name);
+    const b64=canvas.toDataURL('image/jpeg',0.92).split(',')[1];
+    const bin=atob(b64), bytes=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+    const blob=makePdf(bytes,canvas.width,canvas.height);
+    const fname=('제안서_'+st.name+'_'+problems[st.key].title.replace(/[^가-힣A-Za-z0-9]/g,'')).replace(/[\\/:*?"<>|\s]+/g,'_')+'.pdf';
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download=fname; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+  }catch(e){
+    alert('PDF를 만들지 못했어요. 선생님께 알려 주세요.');
+  }
+};
+
+/* ==================== 브라우저의 '뒤로 가기' 버튼도 앱 안의 '뒤로 가기'처럼 한 단계씩 이동 ==================== */
+const BACK_BTN = { s3:'back3', s4:'back4', s5:'back5', s6:'back6', s7:'back7' };
+function curScreen(){ return SCREENS.find(s=>!$(s).classList.contains('hidden')); }
+try{
+  history.replaceState({app:1},'');
+  history.pushState({app:1},'');
+  window.addEventListener('popstate',()=>{
+    const cur=curScreen();
+    if(cur==='s1') return;                         // 첫 화면에서는 그대로 앱을 나가도 괜찮아요
+    if(cur==='s2') show('s1'); else $(BACK_BTN[cur]).click();
+    try{ history.pushState({app:1},''); }catch(e){}   // 다음 '뒤로 가기'도 같은 방식으로 받기
+  });
+}catch(e){}
+</script>
+</body>
+</html>
